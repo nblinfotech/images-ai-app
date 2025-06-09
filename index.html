@@ -53,10 +53,10 @@
     <!-- App Container (Will be hidden until logged in) -->
     <div id="app-container" class="app-container" style="display: none;">
         <!-- Loading Overlay -->
-        <div id="loading-overlay" class="loading-overlay">
+        <!-- <div id="loading-overlay" class="loading-overlay">
             <div class="spinner"></div>
             <p>Communicating with server...</p>
-        </div>
+        </div> -->
 
         <!-- Left Sidebar for Titles -->
         <div class="sidebar">
@@ -152,6 +152,14 @@
                 <h3>Generated Paintings</h3>
                 <div class="thumbnails-grid" id="thumbnails-grid">
                     <!-- Paintings will be displayed here -->
+                    <!-- Loader Placeholder (initially hidden) -->
+                    <div id="thumbnail-loading-placeholder" style="display: none;">
+                        <div class="thumbnail-card loading-card">
+                            <div class="loader-image shimmer"></div>
+                            <p class="loader-text">Generating...</p>
+                        </div>
+                    </div>
+
                     <div class="empty-state" id="thumbnails-empty-state">No paintings generated yet.</div>
                 </div>
                 <div class="more-thumbnails-section" id="more-thumbnails-section" style="display: none;">

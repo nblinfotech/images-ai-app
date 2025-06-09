@@ -227,6 +227,9 @@ const referenceThumbnails = document.getElementById('reference-thumbnails');
 const fullPrompt = document.getElementById('full-prompt');
 const loadingOverlay = document.getElementById('loading-overlay');
 
+const placeholder = document.getElementById('thumbnail-loading-placeholder');
+const thumbnailsEmpty = document.getElementById('thumbnails-empty-state');
+
 // Callback to handle when a thumbnail is ready
 let thumbnailReady = null;
 
@@ -273,12 +276,12 @@ function showLoading(show) {
     isLoading = show;
 
     // Show/hide the loading overlay
-    // const overlay = document.getElementById('loading-overlay');
-    // if (overlay) {
-    //     overlay.style.display = show ? 'flex' : 'none';
-    // } else {
-    //     console.error("Loading overlay element not found!");
-    // }
+    const overlay = document.getElementById('loading-overlay');
+    if (overlay) {
+        overlay.style.display = show ? 'flex' : 'none';
+    } else {
+        console.error("Loading overlay element not found!");
+    }
 
     // Disable buttons while loading
     const buttons = document.querySelectorAll('button');
@@ -498,6 +501,175 @@ function setupEventListeners() {
     //     }
     // });
 
+    // generateBtn.addEventListener('click', async () => {
+    //     const title = titleInput.value.trim();
+    //     if (!title) {
+    //         alert('Please enter a title');
+    //         return;
+    //     }
+
+    //     const instructions = customInstructions.value.trim();
+    //     const quantity = parseInt(quantitySelect.value) || 5;
+
+    //     // Hide "no thumbnails" message and clear previous thumbnails
+    //     thumbnailsEmpty.style.display = 'none';
+    //     thumbnailsGrid.innerHTML = '';
+
+    //     // Show placeholder loaders equal to quantity
+    //     for (let i = 0; i < quantity; i++) {
+    //         const loaderClone = placeholder.cloneNode(true);
+    //         loaderClone.style.display = 'block';
+    //         thumbnailsGrid.appendChild(loaderClone);
+    //     }
+
+    //     // Show progress UI
+    //     document.getElementById('progress-section').style.display = 'block';
+    //     document.getElementById('ai1-status').innerText = 'Generating painting ideas...';
+    //     document.getElementById('ai2-status').innerText = 'Waiting for concepts...';
+
+    //     showLoading(true);
+
+    //     try {
+    //         console.log("Creating/updating title:", { title, instructions });
+
+    //         // Create or update title
+    //         if (!currentTitle || currentTitle.title !== title) {
+    //             console.log("Creating new title");
+    //             const response = await createTitle(title, instructions);
+    //             console.log("Title created:", response.data);
+    //             currentTitle = response.data;
+    //         } else {
+    //             console.log("Updating existing title:", currentTitle.id);
+    //             const response = await updateTitle(currentTitle.id, title, instructions);
+    //             console.log("Title updated:", response.data);
+    //             currentTitle = response.data;
+    //         }
+
+    //         // Upload title-specific references
+    //         if (!globalReferenceToggle.checked && currentTitle.references) {
+    //             console.log("Processing title-specific references");
+    //             for (const ref of currentTitle.references) {
+    //                 if (!ref.id) {
+    //                     console.log("Uploading new reference");
+    //                     await uploadReference(currentTitle.id, ref.data, false);
+    //                 }
+    //             }
+    //         }
+
+    //         // Generate thumbnails
+    //         console.log("Generating thumbnails for title ID:", currentTitle.id, "Quantity:", quantity);
+    //         const generateResponse = await generatePaintings(currentTitle.id, quantity);
+    //         console.log("Generate thumbnails response:", generateResponse.data);
+
+    //         // Start polling for thumbnail status
+    //         pollThumbnailStatus(currentTitle.id, quantity);
+
+    //         // Refresh titles list
+    //         console.log("Refreshing titles list");
+    //         const titlesResponse = await getTitles();
+    //         titles = titlesResponse.data.titles;
+    //         renderTitlesList();
+
+    //     } catch (error) {
+    //         console.error('Error generating thumbnails:', error);
+    //         showLoading(false);
+
+    //         // Detailed error handling
+    //         if (error.response) {
+    //             console.error("Server responded with error:", error.response.status);
+    //             console.error("Error data:", error.response.data);
+    //             alert(`Server error (${error.response.status}): ${error.response.data?.error || 'Unknown error'}`);
+    //         } else if (error.request) {
+    //             console.error("No response received:", error.request);
+    //             alert('No response from server. Please check if the backend is running.');
+    //         } else {
+    //             console.error("Request setup error:", error.message);
+    //             alert(`Error: ${error.message}`);
+    //         }
+    //     }
+    // });
+
+    // generateBtn.addEventListener('click', async () => {
+    //     const title = titleInput.value.trim();
+    //     if (!title) {
+    //         alert('Please enter a title');
+    //         return;
+    //     }
+
+    //     const quantity = parseInt(quantitySelect.value) || 5;
+
+    //     // Clear previous thumbnails
+    //     thumbnailsEmpty.style.display = 'none';
+    //     thumbnailsGrid.innerHTML = '';
+
+    //     // Create placeholder cards with progress bars
+    //     const placeholderCards = [];
+    //     for (let i = 0; i < quantity; i++) {
+    //         const card = document.createElement('div');
+    //         card.className = 'thumbnail-card';
+
+    //         const status = document.createElement('div');
+    //         status.className = 'thumbnail-status';
+    //         status.innerText = 'Queued...';
+
+    //         const loader = document.createElement('div');
+    //         loader.className = 'thumbnail-loader'; // CSS for spinner or skeleton
+
+    //         card.appendChild(loader);
+    //         card.appendChild(status);
+
+    //         thumbnailsGrid.appendChild(card);
+    //         placeholderCards.push({ card, status });
+    //     }
+
+    //     // Show overall progress section
+    //     document.getElementById('progress-section').style.display = 'block';
+    //     document.getElementById('ai1-status').innerText = 'Generating painting ideas...';
+    //     document.getElementById('ai2-status').innerText = 'Waiting for concepts...';
+
+    //     showLoading(true);
+
+    //     try {
+    //         const instructions = customInstructions.value.trim();
+
+    //         // Create or update title
+    //         if (!currentTitle || currentTitle.title !== title) {
+    //             const response = await createTitle(title, instructions);
+    //             currentTitle = response.data;
+    //         } else {
+    //             const response = await updateTitle(currentTitle.id, title, instructions);
+    //             currentTitle = response.data;
+    //         }
+
+    //         // Upload title-specific references
+    //         if (!globalReferenceToggle.checked && currentTitle.references) {
+    //             for (const ref of currentTitle.references) {
+    //                 if (!ref.id) {
+    //                     await uploadReference(currentTitle.id, ref.data, false);
+    //                 }
+    //             }
+    //         }
+
+    //         // Start generation
+    //         const generateResponse = await generatePaintings(currentTitle.id, quantity);
+    //         const taskIds = generateResponse.data.tasks; // Assume it returns an array of painting task IDs
+
+    //         // Poll each painting task individually
+    //         taskIds.forEach((taskId, index) => {
+    //             pollPaintingTask(taskId, placeholderCards[index]);
+    //         });
+
+    //         // Refresh title list
+    //         const titlesResponse = await getTitles();
+    //         titles = titlesResponse.data.titles;
+    //         renderTitlesList();
+    //     } catch (error) {
+    //         console.error('Error generating thumbnails:', error);
+    //         showLoading(false);
+    //         handleRequestError(error);
+    //     }
+    // });
+
     generateBtn.addEventListener('click', async () => {
         const title = titleInput.value.trim();
         if (!title) {
@@ -505,40 +677,31 @@ function setupEventListeners() {
             return;
         }
 
+        const quantity = parseInt(quantitySelect.value) || 5;
+
+        // Hide empty message
+        thumbnailsEmpty.style.display = 'none';
+
+        // Show overall progress section
+        const progressSection = document.getElementById('progress-section');
+        progressSection.style.display = 'block';
+
+        // Reset progress bars and statuses
+        const ai1Status = document.getElementById('ai1-status');
+        const ai2Status = document.getElementById('ai2-status');
+        const ai1Progress = document.getElementById('ai1-progress');
+        const ai2Progress = document.getElementById('ai2-progress');
+        ai1Status.innerText = '';
+        ai2Status.innerText = '';
+        ai1Progress.style.width = '0%';
+        ai2Progress.style.width = '0%';
+
         showLoading(true);
 
         try {
             const instructions = customInstructions.value.trim();
-            const quantity = parseInt(quantitySelect.value) || 5;
 
-            // Clear any existing thumbnails
-            thumbnailsGrid.innerHTML = '';
-
-            // Show progress section
-            progressSection.style.display = 'block';
-            ai1Status.textContent = 'Initializing thumbnail generation...';
-            ai2Status.textContent = 'Waiting for concepts...';
-            ai1Progress.style.width = '0%';
-            ai2Progress.style.width = '0%';
-
-            // Create loading placeholders for each thumbnail
-            for (let i = 0; i < quantity; i++) {
-                const thumbContainer = document.createElement('div');
-                thumbContainer.className = 'thumbnail-item';
-                thumbContainer.id = `thumb-loading-${i}`;
-
-                const loadingDiv = document.createElement('div');
-                loadingDiv.className = 'loading-thumbnail';
-                loadingDiv.innerHTML = `
-                    <div class="loader"></div>
-                    <p class="status-text">Waiting in queue...</p>
-                `;
-
-                thumbContainer.appendChild(loadingDiv);
-                thumbnailsGrid.appendChild(thumbContainer);
-            }
-
-            // Create/update title
+            // Create or update title on server
             if (!currentTitle || currentTitle.title !== title) {
                 const response = await createTitle(title, instructions);
                 currentTitle = response.data;
@@ -547,7 +710,7 @@ function setupEventListeners() {
                 currentTitle = response.data;
             }
 
-            // Upload any new title-specific references
+            // Upload title-specific references if global reference toggle is off
             if (!globalReferenceToggle.checked && currentTitle.references) {
                 for (const ref of currentTitle.references) {
                     if (!ref.id) {
@@ -556,31 +719,25 @@ function setupEventListeners() {
                 }
             }
 
-            // Generate thumbnails
-            const generateResponse = await generatePaintings(currentTitle.id, quantity);
+            // Use generateServerThumbnails to create thumbnails
+            await generateServerThumbnails(currentTitle, currentTitle.references || [], quantity, false);
 
-            // Start polling for thumbnail status with enhanced UI updates
-            await enhancedPollThumbnailStatus(currentTitle.id, quantity);
-
-            // Refresh titles list
+            // Refresh titles list UI
             const titlesResponse = await getTitles();
             titles = titlesResponse.data.titles;
             renderTitlesList();
 
         } catch (error) {
             console.error('Error generating thumbnails:', error);
+            handleRequestError(error);
+        } finally {
             showLoading(false);
-            progressSection.style.display = 'none';
-
-            if (error.response) {
-                alert(`Server error (${error.response.status}): ${error.response.data?.error || 'Unknown error'}`);
-            } else if (error.request) {
-                alert('No response from server. Please check if the backend is running.');
-            } else {
-                alert(`Error: ${error.message}`);
-            }
+            progressSection.style.display = 'none'; // hide progress section after done
         }
     });
+
+
+
 
 
     // More Thumbnails Button
@@ -961,6 +1118,70 @@ async function generateServerThumbnails(titleObj, references, quantity, isAdditi
     }
 }
 
+// async function generateServerThumbnails(titleObj, references, quantity, isAdditional) {
+//     progressSection.style.display = 'block';
+//     thumbnailsEmptyState.style.display = 'none';
+
+//     if (!isAdditional) {
+//         thumbnailsGrid.innerHTML = '';
+//         titleObj.thumbnails = [];
+//     }
+
+//     const startIndex = isAdditional ? titleObj.thumbnails.length : 0;
+
+//     for (let i = 0; i < quantity; i++) {
+//         const thumbContainer = document.createElement('div');
+//         thumbContainer.className = 'thumbnail-card loading-card shimmer';
+//         thumbContainer.id = `thumb-${startIndex + i}`;
+
+//         const loaderImage = document.createElement('div');
+//         loaderImage.className = 'loader-image shimmer';
+
+//         thumbContainer.appendChild(loaderImage);
+//         thumbnailsGrid.appendChild(thumbContainer);
+
+//     }
+
+//     const completedThumbnails = [];
+
+//     thumbnailReady = (thumbnail) => {
+//         renderThumbnail(thumbnail, thumbnail.index);
+//         completedThumbnails.push(thumbnail);
+
+//         ai2Status.textContent = `Creating images... ${completedThumbnails.length}/${quantity} complete`;
+//         ai2Progress.style.width = `${(completedThumbnails.length / quantity) * 100}%`;
+//     };
+
+//     try {
+//         ai1Status.textContent = 'Generating painting ideas...';
+//         simulateProgress(ai1Progress, null, null, 'Painting concepts ready!', 3000, async () => {
+//             ai2Status.textContent = `Creating images... 0/${quantity} complete`;
+//             ai2Progress.style.width = '0%';
+
+//             const newThumbnails = await ServerAPI.generateThumbnails(titleObj, references, quantity, startIndex);
+
+//             progressSection.style.display = 'none';
+//             moreThumbnailsSection.style.display = 'block';
+
+//             if (isAdditional) {
+//                 titleObj.thumbnails = [...titleObj.thumbnails, ...newThumbnails];
+//             } else {
+//                 titleObj.thumbnails = newThumbnails;
+//             }
+
+//             await saveData();
+
+//             thumbnailReady = null;
+//         });
+//     } catch (error) {
+//         console.error('Error generating thumbnails:', error);
+//         alert('Failed to generate paintings. Please try again.');
+//         progressSection.style.display = 'none';
+//         thumbnailReady = null;
+//     }
+// }
+
+
 // Generate a summary of the prompt
 function generatePromptSummary(title, instructions) {
     if (!instructions || instructions.trim() === '') {
@@ -1096,6 +1317,89 @@ function renderThumbnail(thumbnailData, index) {
     });
 }
 
+function handleRequestError(error, userMessage = 'Something went wrong. Please try again.') {
+    console.error('Request Error:', error);
+
+    // Optional: you can customize this to show a toast, modal, or in-page error block
+    if (error.response && error.response.data && error.response.data.message) {
+        alert(`${userMessage}\n\nDetails: ${error.response.data.message}`);
+    } else {
+        alert(userMessage);
+    }
+}
+
+
+
+// function renderThumbnail(thumbnailData, index) {
+//     console.log('Rendering thumbnail data:', thumbnailData);
+//     const thumbContainer = document.getElementById(`thumb-${index}`);
+//     thumbContainer.innerHTML = '';
+//     thumbContainer.dataset.id = thumbnailData.id;
+
+//     if (thumbnailData.status === 'failed') {
+//         const errorDiv = document.createElement('div');
+//         errorDiv.className = 'thumbnail-error';
+
+//         const errorIcon = document.createElement('div');
+//         errorIcon.className = 'error-icon';
+//         errorIcon.innerHTML = '!';
+
+//         const errorMessage = document.createElement('p');
+//         errorMessage.className = 'error-message';
+//         errorMessage.textContent = thumbnailData.error_message || 'Thumbnail generation failed';
+
+//         errorDiv.appendChild(errorIcon);
+//         errorDiv.appendChild(errorMessage);
+
+//         const regenerateBtn = document.createElement('button');
+//         regenerateBtn.className = 'action-btn';
+//         regenerateBtn.textContent = 'Try Again';
+//         regenerateBtn.addEventListener('click', (e) => {
+//             e.stopPropagation();
+//             regenerateSingleThumbnail(index, thumbnailData.id);
+//         });
+
+//         errorDiv.appendChild(regenerateBtn);
+//         thumbContainer.appendChild(errorDiv);
+//         return;
+//     }
+
+//     const img = document.createElement('img');
+//     img.src = thumbnailData.image_url;
+//     img.alt = thumbnailData.summary;
+//     img.className = 'thumbnail-image';
+
+//     const actions = document.createElement('div');
+//     actions.className = 'thumbnail-actions';
+
+//     const downloadBtn = document.createElement('button');
+//     downloadBtn.className = 'action-btn';
+//     downloadBtn.textContent = 'Download';
+//     downloadBtn.addEventListener('click', (e) => {
+//         e.stopPropagation();
+//         alert(`Downloading: ${thumbnailData.summary}`);
+//     });
+
+//     const regenerateBtn = document.createElement('button');
+//     regenerateBtn.className = 'action-btn';
+//     regenerateBtn.textContent = 'Regenerate';
+//     regenerateBtn.addEventListener('click', (e) => {
+//         e.stopPropagation();
+//         regenerateSingleThumbnail(index, thumbnailData.id);
+//     });
+
+//     actions.appendChild(downloadBtn);
+//     actions.appendChild(regenerateBtn);
+
+//     thumbContainer.appendChild(img);
+//     thumbContainer.appendChild(actions);
+
+//     thumbContainer.addEventListener('click', () => {
+//         showPromptDetails(thumbnailData);
+//     });
+// }
+
+
 // Show prompt details in modal
 function showPromptDetails(thumbnailData) {
     // Set modal content
@@ -1142,19 +1446,45 @@ function showPromptDetails(thumbnailData) {
 }
 
 // Regenerate a single thumbnail
+// async function regenerateSingleThumbnail(index, id) {
+//     if (!currentTitle) return;
+
+//     const thumbContainer = document.getElementById(`thumb-${index}`);
+//     thumbContainer.innerHTML = '';
+
+//     const loadingThumb = document.createElement('div');
+//     loadingThumb.className = 'loading-thumbnail';
+//     thumbContainer.appendChild(loadingThumb);
+
+//     try {
+//         // In a real implementation, you would call a specific endpoint to regenerate a single thumbnail
+//         // For now, we'll just reload all thumbnails after a delay to simulate regeneration
+//         setTimeout(async () => {
+//             await loadThumbnails(currentTitle.id);
+//         }, 2000);
+//     } catch (error) {
+//         console.error('Error regenerating thumbnail:', error);
+//         alert('Failed to regenerate thumbnail. Please try again.');
+//     }
+// }
 async function regenerateSingleThumbnail(index, id) {
     if (!currentTitle) return;
 
     const thumbContainer = document.getElementById(`thumb-${index}`);
     thumbContainer.innerHTML = '';
 
-    const loadingThumb = document.createElement('div');
-    loadingThumb.className = 'loading-thumbnail';
-    thumbContainer.appendChild(loadingThumb);
+    const loadingCard = document.createElement('div');
+    loadingCard.className = 'thumbnail-card loading-card shimmer';
+
+    const loaderImage = document.createElement('div');
+    loaderImage.className = 'loader-image shimmer';
+
+    loadingCard.appendChild(loaderImage);
+    thumbContainer.appendChild(loadingCard);
+
 
     try {
-        // In a real implementation, you would call a specific endpoint to regenerate a single thumbnail
-        // For now, we'll just reload all thumbnails after a delay to simulate regeneration
+        // Simulate regeneration by refreshing all thumbnails after a short delay
         setTimeout(async () => {
             await loadThumbnails(currentTitle.id);
         }, 2000);
@@ -1164,7 +1494,34 @@ async function regenerateSingleThumbnail(index, id) {
     }
 }
 
+
 // Simulate progress for the AI processes
+// function simulateProgress(progressBar, statusElement, startMessage, endMessage, duration, callback) {
+//     let startTime = Date.now();
+//     let progress = 0;
+
+//     if (statusElement && startMessage) {
+//         statusElement.textContent = startMessage;
+//     }
+
+//     const interval = setInterval(() => {
+//         const elapsedTime = Date.now() - startTime;
+
+//         if (elapsedTime >= duration) {
+//             progressBar.style.width = '100%';
+//             if (statusElement && endMessage) {
+//                 statusElement.textContent = endMessage;
+//             }
+//             clearInterval(interval);
+//             if (callback) callback();
+//             return;
+//         }
+
+//         progress = (elapsedTime / duration) * 100;
+//         progressBar.style.width = `${progress}%`;
+//     }, 50);
+// }
+
 function simulateProgress(progressBar, statusElement, startMessage, endMessage, duration, callback) {
     let startTime = Date.now();
     let progress = 0;
@@ -1190,6 +1547,7 @@ function simulateProgress(progressBar, statusElement, startMessage, endMessage, 
         progressBar.style.width = `${progress}%`;
     }, 50);
 }
+
 
 // Render the list of titles in the sidebar
 function renderTitlesList() {
@@ -1512,100 +1870,6 @@ async function pollThumbnailStatus(titleId, expectedQuantity, attempt = 0) {
             await loadThumbnails(titleId);
         }
     }
-}
-
-async function enhancedPollThumbnailStatus(titleId, expectedQuantity, attempt = 0) {
-    // const maxAttempts = 40;
-    // const pollInterval = 3000;
-
-    // if (attempt >= maxAttempts) {
-    //     console.error('Polling timed out.');
-    //     alert('Thumbnail generation is taking longer than expected. Please check back later.');
-    //     showLoading(false);
-    //     await loadThumbnails(titleId);
-    //     return;
-    // }
-
-    try {
-        const response = await getPaintings(titleId);
-        const thumbnails = response.data.paintings || [];
-        const relevantThumbnails = thumbnails.filter(t => t.title_id === titleId);
-
-        // Update AI progress bars and statuses
-        updateAIProgress(relevantThumbnails, expectedQuantity);
-
-        // Update individual thumbnail statuses
-        updateThumbnailStatuses(relevantThumbnails);
-
-        // Check if all thumbnails are completed
-        const allCompleted = relevantThumbnails.length >= expectedQuantity &&
-            relevantThumbnails.every(t => t.status === 'completed' || t.status === 'failed');
-
-        if (allCompleted) {
-            progressSection.style.display = 'none';
-            moreThumbnailsSection.style.display = 'block';
-            showLoading(false);
-
-            // Final render of all thumbnails
-            await loadThumbnails(titleId);
-        } else {
-            setTimeout(() => enhancedPollThumbnailStatus(titleId, expectedQuantity, attempt + 1), pollInterval);
-        }
-    } catch (error) {
-        console.error('Error during polling:', error);
-        if (attempt < maxAttempts - 1) {
-            setTimeout(() => enhancedPollThumbnailStatus(titleId, expectedQuantity, attempt + 1), pollInterval);
-        } else {
-            alert('Failed to get thumbnail status updates. Please check back later.');
-            showLoading(false);
-            await loadThumbnails(titleId);
-        }
-    }
-}
-
-// Helper function to update AI progress bars
-function updateAIProgress(thumbnails, expectedQuantity) {
-    // AI 1 progress (concept generation)
-    const conceptsGenerated = thumbnails.length;
-    const ai1ProgressPercent = Math.min(100, (conceptsGenerated / expectedQuantity) * 100);
-    ai1Progress.style.width = `${ai1ProgressPercent}%`;
-    ai1Status.textContent = `Generating concepts... ${conceptsGenerated}/${expectedQuantity}`;
-
-    // AI 2 progress (image generation)
-    const completedImages = thumbnails.filter(t => t.status === 'completed' || t.status === 'failed').length;
-    const ai2ProgressPercent = thumbnails.length > 0 ? (completedImages / thumbnails.length) * 100 : 0;
-    ai2Progress.style.width = `${ai2ProgressPercent}%`;
-    ai2Status.textContent = `Generating images... ${completedImages}/${thumbnails.length}`;
-}
-
-// Helper function to update individual thumbnail statuses
-function updateThumbnailStatuses(thumbnails) {
-    thumbnails.forEach((thumbnail, index) => {
-        const containerId = `thumb-loading-${index}`;
-        const container = document.getElementById(containerId);
-
-        if (!container) return;
-
-        if (thumbnail.status === 'processing') {
-            container.innerHTML = `
-                <div class="loading-thumbnail">
-                    <div class="loader"></div>
-                    <p class="status-text">Generating image...</p>
-                    <p class="progress-text">${index + 1}/${thumbnails.length}</p>
-                </div>
-            `;
-        } else if (thumbnail.status === 'completed' || thumbnail.status === 'failed') {
-            // The actual renderThumbnail will handle this when we call loadThumbnails
-        } else {
-            container.innerHTML = `
-                <div class="loading-thumbnail">
-                    <div class="loader"></div>
-                    <p class="status-text">Waiting in queue...</p>
-                    <p class="progress-text">${index + 1}/${thumbnails.length}</p>
-                </div>
-            `;
-        }
-    });
 }
 
 // Initialize when the DOM is loaded

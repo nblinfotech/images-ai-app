@@ -11,14 +11,13 @@ const initAPI = async () => {
     const configResponse = await axios.get('/api/config');
     const { serverIP, apiPort } = configResponse.data;
     API_URL = `http://${serverIP}:${apiPort}/api`;
-    
+
     // Create axios instance with auth token
     api = axios.create({
       baseURL: API_URL,
       headers: {
         'Content-Type': 'application/json'
-      },
-      timeout: 10000 // Add timeout to avoid long waits on network issues
+      } // Add timeout to avoid long waits on network issues
     });
 
     // Add auth token to requests if available
@@ -29,22 +28,21 @@ const initAPI = async () => {
       }
       return config;
     });
-    
+
     return true;
   } catch (error) {
     console.error('Failed to fetch server configuration, using default', error);
-    
+
     // Fallback to using the current hostname instead of hardcoded IP
     const currentHostname = window.location.hostname;
     API_URL = `http://${currentHostname}:3000/api`;
-    
+
     // Create axios instance with auth token
     api = axios.create({
       baseURL: API_URL,
       headers: {
         'Content-Type': 'application/json'
-      },
-      timeout: 10000
+      }
     });
 
     // Add auth token to requests if available
@@ -55,7 +53,7 @@ const initAPI = async () => {
       }
       return config;
     });
-    
+
     return false;
   }
 };
