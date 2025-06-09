@@ -1515,16 +1515,16 @@ async function pollThumbnailStatus(titleId, expectedQuantity, attempt = 0) {
 }
 
 async function enhancedPollThumbnailStatus(titleId, expectedQuantity, attempt = 0) {
-    // const maxAttempts = 40;
-    // const pollInterval = 3000;
+    const maxAttempts = 60;
+    const pollInterval = 4000;
 
-    // if (attempt >= maxAttempts) {
-    //     console.error('Polling timed out.');
-    //     alert('Thumbnail generation is taking longer than expected. Please check back later.');
-    //     showLoading(false);
-    //     await loadThumbnails(titleId);
-    //     return;
-    // }
+    if (attempt >= maxAttempts) {
+        console.error('Polling timed out.');
+        alert('Thumbnail generation is taking longer than expected. Please check back later.');
+        showLoading(false);
+        await loadThumbnails(titleId);
+        return;
+    }
 
     try {
         const response = await getPaintings(titleId);
