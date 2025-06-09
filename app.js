@@ -513,6 +513,7 @@ function setupEventListeners() {
 
             // Clear any existing thumbnails
             thumbnailsGrid.innerHTML = '';
+            moreThumbnailsSection.style.display = 'block';
 
             // Show progress section
             progressSection.style.display = 'block';
@@ -591,6 +592,30 @@ function setupEventListeners() {
 
         try {
             const quantity = parseInt(quantitySelect.value) || 3;
+
+            // Show progress section
+            progressSection.style.display = 'block';
+            ai1Status.textContent = 'Initializing thumbnail generation...';
+            ai2Status.textContent = 'Waiting for concepts...';
+            ai1Progress.style.width = '0%';
+            ai2Progress.style.width = '0%';
+
+            // Create loading placeholders for each thumbnail
+            for (let i = 0; i < quantity; i++) {
+                const thumbContainer = document.createElement('div');
+                thumbContainer.className = 'thumbnail-item';
+                thumbContainer.id = `thumb-loading-${i}`;
+
+                const loadingDiv = document.createElement('div');
+                loadingDiv.className = 'loading-thumbnail';
+                loadingDiv.innerHTML = `
+                    <div class="loader"></div>
+                    <p class="status-text">Waiting in queue...</p>
+                `;
+
+                thumbContainer.appendChild(loadingDiv);
+                thumbnailsGrid.appendChild(thumbContainer);
+            }
 
             // Generate more thumbnails
             await generatePaintings(currentTitle.id, quantity);
